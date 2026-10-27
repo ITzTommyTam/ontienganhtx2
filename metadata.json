@@ -1,0 +1,6 @@
+{
+  "name": "ORBITAL // TYPE (Unit 2)",
+  "description": "Game bắn súng gõ từ vựng tiếng Anh Unit 2: A Multicultural World phong cách Nothing OS vũ trụ, tích hợp bảng xếp hạng thời gian thực, thách đấu bạn bè và ôn tập từ sai.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

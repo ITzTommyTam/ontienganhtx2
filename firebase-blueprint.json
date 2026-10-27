@@ -1,0 +1,192 @@
+{
+  "entities": {
+    "LeaderboardBoard": {
+      "title": "LeaderboardBoard",
+      "description": "Global real-time leaderboard state document for Unit 2 vocabulary space shooter",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "description": "UID of the last authenticated updater",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "topPilotName": {
+          "type": "string",
+          "description": "Callsign of the top scoring pilot",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "topScore": {
+          "type": "integer",
+          "description": "Highest score recorded on the board"
+        },
+        "entries": {
+          "type": "array",
+          "description": "Bounded list of up to 20 leaderboard entries formatted as compact strings",
+          "maxLength": 20
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp"
+        }
+      },
+      "required": ["ownerId", "topPilotName", "topScore", "entries", "createdAt", "updatedAt"]
+    },
+    "ChallengeRoom": {
+      "title": "ChallengeRoom",
+      "description": "Real-time 1v1 friend challenge room for Unit 2 vocabulary duel",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "description": "UID of the room creator",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "hostName": {
+          "type": "string",
+          "description": "Callsign of the host player",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "hostScore": {
+          "type": "integer",
+          "description": "Current or final score of the host player"
+        },
+        "hostAccuracy": {
+          "type": "integer",
+          "description": "Accuracy percentage (0-100) of the host player"
+        },
+        "guestId": {
+          "type": "string",
+          "description": "UID of the guest challenger",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "guestName": {
+          "type": "string",
+          "description": "Callsign of the guest challenger",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "guestScore": {
+          "type": "integer",
+          "description": "Current or final score of the guest challenger"
+        },
+        "guestAccuracy": {
+          "type": "integer",
+          "description": "Accuracy percentage (0-100) of the guest challenger"
+        },
+        "sectionFilter": {
+          "type": "string",
+          "description": "Unit 2 section filter for the duel",
+          "enum": ["ALL", "GETTING_STARTED", "LANGUAGE", "READING", "SPEAKING_LISTENING", "WRITING_CULTURE", "LOOKING_BACK"]
+        },
+        "seed": {
+          "type": "integer",
+          "description": "Deterministic wave seed shared by both players"
+        },
+        "status": {
+          "type": "string",
+          "description": "Lifecycle state of the duel room",
+          "enum": ["waiting", "active", "completed"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server update timestamp"
+        }
+      },
+      "required": [
+        "ownerId",
+        "hostName",
+        "hostScore",
+        "hostAccuracy",
+        "guestId",
+        "guestName",
+        "guestScore",
+        "guestAccuracy",
+        "sectionFilter",
+        "seed",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "PilotProfile": {
+      "title": "PilotProfile",
+      "description": "Private user study state including missed Unit 2 words and daily reminder settings",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "description": "UID of the pilot",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "pilotName": {
+          "type": "string",
+          "description": "Pilot display callsign",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "bestScore": {
+          "type": "integer",
+          "description": "Personal best score"
+        },
+        "missedWordIds": {
+          "type": "array",
+          "description": "Bounded list of up to 50 missed vocabulary IDs for review",
+          "maxLength": 50
+        },
+        "reminderTime": {
+          "type": "string",
+          "description": "Daily study reminder time in HH:MM format",
+          "minLength": 5,
+          "maxLength": 5
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server update timestamp"
+        }
+      },
+      "required": ["ownerId", "pilotName", "bestScore", "missedWordIds", "reminderTime", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/global_boards/{boardId}": {
+      "schema": { "$ref": "#/entities/LeaderboardBoard" },
+      "description": "Real-time global leaderboard document for Unit 2 Orbital Type"
+    },
+    "/challenges/{roomId}": {
+      "schema": { "$ref": "#/entities/ChallengeRoom" },
+      "description": "Real-time 1v1 friend challenge rooms indexed by room code"
+    },
+    "/pilots/{pilotId}": {
+      "schema": { "$ref": "#/entities/PilotProfile" },
+      "description": "Private pilot profile storing personal bests, missed words, and reminder schedule"
+    }
+  }
+}

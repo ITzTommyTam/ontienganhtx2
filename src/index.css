@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'DotGothic16', 'Space Mono', monospace;
+    --font-mono: 'JetBrains Mono', 'Space Mono', monospace;
+    --font-sans: 'Space Mono', monospace;
+  }
+
+  * {
+    box-sizing: border-box;
+    user-select: none;
+  }
+
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: #050505;
+    color: #ffffff;
+    font-family: var(--font-mono);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+.font-nothing {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.font-telemetry {
+  font-family: 'JetBrains Mono', 'Space Mono', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.03em;
+}
+
+.dot-matrix-bg {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.dot-matrix-border {
+  border: 1px dashed rgba(255, 255, 255, 0.28);
+}
+
+/* Custom Nothing OS minimal scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
