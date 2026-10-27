@@ -13,9 +13,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:ital,wght@0,400..800;1,400..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body style="background-color: #050505; color: #ffffff; margin: 0;">
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      window.__loadGhPagesFallback = function () {
+        if (window.__ghFallbackLoaded) return;
+        var root = document.getElementById('root');
+        if (root && root.children && root.children.length > 0) return;
+        window.__ghFallbackLoaded = true;
+        var css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = './public/gh-pages-bundle/app.css';
+        css.onerror = function () {
+          var altCss = document.createElement('link');
+          altCss.rel = 'stylesheet';
+          altCss.href = './gh-pages-bundle/app.css';
+          document.head.appendChild(altCss);
+        };
+        document.head.appendChild(css);
+
+        var s = document.createElement('script');
+        s.type = 'module';
+        s.src = './public/gh-pages-bundle/app.js';
+        s.onerror = function () {
+          var altS = document.createElement('script');
+          altS.type = 'module';
+          altS.src = './gh-pages-bundle/app.js';
+          document.body.appendChild(altS);
+        };
+        document.body.appendChild(s);
+      };
+      setTimeout(function () {
+        var root = document.getElementById('root');
+        if (!root || !root.children || root.children.length === 0) {
+          window.__loadGhPagesFallback();
+        }
+      }, 900);
+    </script>
+    <script type="module" src="./src/main.tsx" onerror="window.__loadGhPagesFallback && window.__loadGhPagesFallback()"></script>
   </body>
 </html>
 

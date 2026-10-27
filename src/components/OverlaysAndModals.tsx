@@ -594,6 +594,13 @@ export const OverlaysAndModals: React.FC<OverlaysAndModalsProps> = ({
                             src={img.src}
                             alt={img.title}
                             referrerPolicy="no-referrer"
+                            onError={(e) => {
+                              const target = e.currentTarget;
+                              if (!target.dataset.fallback && img.src.startsWith('./assets/')) {
+                                target.dataset.fallback = '1';
+                                target.src = img.src.replace('./assets/', './public/assets/');
+                              }
+                            }}
                             className="w-full h-72 object-contain bg-[#050505]"
                           />
                         </div>

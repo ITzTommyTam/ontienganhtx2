@@ -31,32 +31,32 @@ export const UNIT2_TEXTBOOK_IMAGES = [
   {
     page: 5,
     title: 'Trang 5 — I. Getting Started (1–14)',
-    src: '/assets/aistudio/2aOboR8R0QMpfsgJVTNorhlkNzkyw4ndoG7yLaPg_bf8ee75b.jpg',
+    src: './assets/aistudio/2aOboR8R0QMpfsgJVTNorhlkNzkyw4ndoG7yLaPg_bf8ee75b.jpg',
   },
   {
     page: 6,
     title: 'Trang 6 — Getting Started (15–24) & II. Language',
-    src: '/assets/aistudio/2aOboR8R0QsUmwYEi2jz5iXgyMfrJYElY6KdcZPc_52eac0a0.jpg',
+    src: './assets/aistudio/2aOboR8R0QsUmwYEi2jz5iXgyMfrJYElY6KdcZPc_52eac0a0.jpg',
   },
   {
     page: 7,
     title: 'Trang 7 — III. Reading (2–30)',
-    src: '/assets/aistudio/2aOboR8R0RQfaagQ7u2NLIWBdtSB7g4e8Zy0NkmW_3ccf2621.jpg',
+    src: './assets/aistudio/2aOboR8R0RQfaagQ7u2NLIWBdtSB7g4e8Zy0NkmW_3ccf2621.jpg',
   },
   {
     page: 8,
     title: 'Trang 8 — Reading (31–37), Speaking, Listening, Writing, CLIL',
-    src: '/assets/aistudio/2aOboR8R0RyUUqLC0tT2zqenPQxXHEmVtRxqvT4y_08c9a4da.jpg',
+    src: './assets/aistudio/2aOboR8R0RyUUqLC0tT2zqenPQxXHEmVtRxqvT4y_08c9a4da.jpg',
   },
   {
     page: 9,
     title: 'Trang 9 — VII. Culture/CLIL (4–26) & VIII. Looking Back (1–4)',
-    src: '/assets/aistudio/2aOboR8R0STv0yYqCDa49psF8LYkKZGuGjPv3oJ6_edf3366d.jpg',
+    src: './assets/aistudio/2aOboR8R0STv0yYqCDa49psF8LYkKZGuGjPv3oJ6_edf3366d.jpg',
   },
   {
     page: 10,
     title: 'Trang 9 (Tiếp) — VIII. Looking Back (5–6: deal with, in advance)',
-    src: '/assets/aistudio/2aOboR8R0T1Xl7ViZAdmah1T20bNxlVQyByvWmUi_b5f12a95.jpg',
+    src: './assets/aistudio/2aOboR8R0T1Xl7ViZAdmah1T20bNxlVQyByvWmUi_b5f12a95.jpg',
   },
 ];
 

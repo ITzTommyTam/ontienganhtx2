@@ -1,6 +1,7 @@
-import { initializeApp } from 'firebase/app';
+import { initializeApp, FirebaseApp } from 'firebase/app';
 import {
   getAuth,
+  Auth,
   GoogleAuthProvider,
   signInWithPopup,
   signOut as fbSignOut,
@@ -9,6 +10,7 @@ import {
 } from 'firebase/auth';
 import {
   getFirestore,
+  Firestore,
   doc,
   getDoc,
   getDocFromServer,
@@ -27,9 +29,22 @@ import {
 } from '../game/rules';
 import { Unit2Section } from '../data/unit2Vocab';
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
-export const auth = getAuth(app);
+let app: FirebaseApp | null = null;
+let dbInstance: Firestore | null = null;
+let authInstance: Auth | null = null;
+
+try {
+  if (firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId) {
+    app = initializeApp(firebaseConfig);
+    dbInstance = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+    authInstance = getAuth(app);
+  }
+} catch (err) {
+  console.warn('Firebase initialized in local fallback mode:', err);
+}
+
+export const db = dbInstance as Firestore;
+export const auth = authInstance as Auth;
 
 export enum OperationType {
   CREATE = 'create',
@@ -65,13 +80,13 @@ export function handleFirestoreError(
   const errInfo: FirestoreErrorInfo = {
     error: error instanceof Error ? error.message : String(error),
     authInfo: {
-      userId: auth.currentUser?.uid,
-      email: auth.currentUser?.email,
-      emailVerified: auth.currentUser?.emailVerified,
-      isAnonymous: auth.currentUser?.isAnonymous,
-      tenantId: auth.currentUser?.tenantId,
+      userId: authInstance?.currentUser?.uid,
+      email: authInstance?.currentUser?.email,
+      emailVerified: authInstance?.currentUser?.emailVerified,
+      isAnonymous: authInstance?.currentUser?.isAnonymous,
+      tenantId: authInstance?.currentUser?.tenantId,
       providerInfo:
-        auth.currentUser?.providerData?.map((provider) => ({
+        authInstance?.currentUser?.providerData?.map((provider) => ({
           providerId: provider.providerId,
           email: provider.email,
         })) || [],
@@ -85,8 +100,9 @@ export function handleFirestoreError(
 
 // Validate Connection to Firestore on initial boot
 async function testConnection() {
+  if (!dbInstance) return;
   try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
+    await getDocFromServer(doc(dbInstance, 'test', 'connection'));
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
       console.error('Please check your Firebase configuration.');
@@ -173,17 +189,30 @@ export function saveLocalLeaderboard(entries: LeaderboardEntryItem[]): void {
 }
 
 export async function signInWithGoogle(): Promise<User | null> {
+  if (!authInstance) return null;
   const provider = new GoogleAuthProvider();
-  const result = await signInWithPopup(auth, provider);
+  const result = await signInWithPopup(authInstance, provider);
   return result.user;
 }
 
 export async function signOutUser(): Promise<void> {
-  await fbSignOut(auth);
+  if (!authInstance) return;
+  await fbSignOut(authInstance);
 }
 
 export function subscribeAuth(callback: (user: User | null) => void): Unsubscribe {
-  return onAuthStateChanged(auth, callback);
+  if (!authInstance) {
+    callback(null);
+    return () => {};
+  }
+  try {
+    return onAuthStateChanged(authInstance, callback, () => {
+      callback(null);
+    });
+  } catch {
+    callback(null);
+    return () => {};
+  }
 }
 
 const GLOBAL_BOARD_ID = 'unit2_main';
@@ -191,7 +220,7 @@ const GLOBAL_BOARD_ID = 'unit2_main';
 export function subscribeGlobalLeaderboard(
   onUpdate: (entries: LeaderboardEntryItem[], isCloudSynced: boolean) => void
 ): Unsubscribe {
-  if (!auth.currentUser) {
+  if (!authInstance?.currentUser || !dbInstance) {
     onUpdate(loadLocalLeaderboard(), false);
     return () => {};
   }
